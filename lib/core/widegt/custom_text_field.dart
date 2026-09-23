@@ -90,7 +90,7 @@ class _CustomTextFiledState extends State<CustomTextFiled> {
           filled: true,
           fillColor: widget.fillcolor ?? Colors.white,
           hintText: widget.hint,
-          hintTextDirection: TextDirection.rtl,
+          hintTextDirection: TextDirection.ltr,
           hintStyle: TextStyle(
             color: widget.hintColor ?? Colors.black54,
             fontSize: widget.fontsizehint ?? 15,

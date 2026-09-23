@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:secure_student_management/core/widegt/cutom_card.dart';
-import 'package:secure_student_management/core/widegt/users_list.dart';
+import 'package:secure_student_management/cubit/cubit_usrs/cubit/all_users_cubit.dart';
+import 'package:secure_student_management/features/users/screens/add_user_page.dart';
+import 'package:secure_student_management/features/users/screens/users_list_page.dart';
 
 class AdminDashbordPage extends StatelessWidget {
   const AdminDashbordPage({super.key});
@@ -30,7 +33,9 @@ class AdminDashbordPage extends StatelessWidget {
             )
           ],
         )
+        
       ),
+    
     );
   }
 }

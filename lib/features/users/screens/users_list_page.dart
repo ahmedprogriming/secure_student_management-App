@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:secure_student_management/cubit/cubit_usrs/cubit/all_users_cubit.dart';
+import 'package:secure_student_management/features/users/screens/add_user_page.dart';
 
 class AllUserPage extends StatefulWidget {
     static const String id = 'AllUserPage';
@@ -172,6 +173,12 @@ Color _getRoleColor(String role) {
       }
       
          ),
+           floatingActionButton: FloatingActionButton(
+  onPressed: () {
+    Navigator.pushNamed(context, AddUserPage.id);
+  },
+  child: const Icon(Icons.person_add),
+),
     );
   }
 }
