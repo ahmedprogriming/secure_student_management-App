@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:secure_student_management/core/widegt/cutom_card.dart';
-import 'package:secure_student_management/cubit/cubit_usrs/cubit/all_users_cubit.dart';
-import 'package:secure_student_management/features/users/screens/add_user_page.dart';
+import 'package:secure_student_management/features/auditing/screens/audit_logs_page.dart';
 import 'package:secure_student_management/features/users/screens/users_list_page.dart';
 
 class AdminDashbordPage extends StatelessWidget {
@@ -28,6 +26,11 @@ class AdminDashbordPage extends StatelessWidget {
                       onTap: ()
                       {
                         Navigator.pushNamed(context, AllUserPage.id);
+                      },),
+                       CustomCard(text: 'Audting Logs Records',
+                      onTap: ()
+                      {
+                        Navigator.pushNamed(context, AuditLogsPage.id);
                       },)
                     ],
             )

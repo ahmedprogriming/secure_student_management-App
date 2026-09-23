@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:secure_student_management/core/network/api_client.dart';
 import 'package:secure_student_management/core/storage/secure_storage_service.dart';
 import 'package:secure_student_management/core/theme/app_colors.dart';
+import 'package:secure_student_management/cubit/audit_cubit/cubit/audit_log_cubit.dart';
+import 'package:secure_student_management/features/auditing/screens/audit_logs_page.dart';
 import 'package:secure_student_management/features/users/screens/add_user_page.dart';
 import 'package:secure_student_management/features/users/screens/users_list_page.dart';
 import 'package:secure_student_management/cubit/cubit/login_page_cubit.dart';
@@ -69,6 +71,12 @@ class MyApp extends StatelessWidget {
     
   ),
 ),
+ BlocProvider(
+  create: (context) => AuditLogsCubit(
+      ApiClient(), 
+    
+  ),
+),
       ],
       child: MaterialApp(
         title: 'Secure Student Management',
@@ -84,6 +92,7 @@ class MyApp extends StatelessWidget {
           AddStudentPage.id:(context) => const AddStudentPage(),
           AllUserPage.id:(context) => const AllUserPage(),
           AddUserPage.id:(context) => const AddUserPage(),
+          AuditLogsPage.id:(context) => const AuditLogsPage(),
         //  EditStudentPage.id:(context) => const EditStudentPage()
         },
         initialRoute: LoginPage.id,

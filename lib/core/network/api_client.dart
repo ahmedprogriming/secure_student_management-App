@@ -1,8 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:secure_student_management/core/constant/api_constant.dart';
-import 'package:secure_student_management/core/network/auth_interceptor.dart';
 import 'package:secure_student_management/core/storage/secure_storage_service.dart';
-import 'package:secure_student_management/features/auth/services/auth_service.dart';
 class ApiClient {
 
   late final Dio dio;
