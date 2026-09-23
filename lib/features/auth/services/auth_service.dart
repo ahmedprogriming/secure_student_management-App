@@ -21,8 +21,29 @@ class AuthService {
       await secureStorageService.saveToken(
         accessToken: loginResponse.accessToken,
         refreshToken: loginResponse.refreshToken,
+        email: request.email,
       );
       return loginResponse;
    
   }
+
+  Future<void> logoutOfApi() async {
+    final tokenStorage = SecureStorageService();
+  final refreshToken = await tokenStorage.getRefreshToken();
+  final email=await tokenStorage.getEmail();
+  
+
+  try {
+    await apiClient.post(
+      '/api/Auth/logout',
+      data: {
+        'refreshToken': refreshToken,
+        'email': email,
+      },
+    );
+  } finally {
+    await tokenStorage.deleteToken(); // حذف البيانات السرية بعد تسجيل الخروج
+  }
+}
+
 }

@@ -1,11 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:secure_student_management/core/network/api_client.dart';
 import 'package:secure_student_management/core/storage/secure_storage_service.dart';
-import 'package:secure_student_management/features/students/screens/students_screen.dart';
-
-import 'core/network/api_client.dart';
-import 'features/auth/models/login_request.dart';
-import 'features/auth/services/auth_service.dart';
-
+import 'package:secure_student_management/core/theme/app_colors.dart';
+import 'package:secure_student_management/core/widegt/users_list.dart';
+import 'package:secure_student_management/cubit/cubit/login_page_cubit.dart';
+import 'package:secure_student_management/cubit/cubit_add_Student/cubit/add_student_cubit.dart';
+import 'package:secure_student_management/cubit/cubit_auth/auth_cubit_cubit.dart';
+import 'package:secure_student_management/cubit/cubit_student/cubit/profile_cupit_cubit.dart';
+import 'package:secure_student_management/cubit/cubit_updateStudent/cubit/update_student_cubit.dart';
+import 'package:secure_student_management/cubit/cubit_usrs/cubit/all_users_cubit.dart';
+import 'package:secure_student_management/cubit/student_list_cubit/cubit/student_list_cubit.dart';
+import 'package:secure_student_management/features/auth/screens/home_page.dart';
+import 'package:secure_student_management/features/auth/screens/login_page.dart';
+import 'package:secure_student_management/features/auth/screens/start_page.dart';
+import 'package:secure_student_management/features/students/screens/add_student_page.dart';
+import 'package:secure_student_management/features/students/screens/student_profile_page.dart';
+import 'package:secure_student_management/features/users/screens/admin_page.dart';
+import 'package:secure_student_management/features/users/screens/student_page.dart';
+import 'package:secure_student_management/features/users/screens/teacher_page.dart';
 void main() {
   runApp(const MyApp());
 }
@@ -15,67 +28,64 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: LoginTestScreen(),
-    );
-  }
-}
-
-class LoginTestScreen extends StatefulWidget {
-  const LoginTestScreen({super.key});
-
-  @override
-  State<LoginTestScreen> createState() => _LoginTestScreenState();
-}
-
-class _LoginTestScreenState extends State<LoginTestScreen> {
-  String result = 'اضغط Login';
-
-  Future<void> login() async {
-    final apiClient = ApiClient();
-    final SecureToken =  SecureStorageService();
-    final authService = AuthService(apiClient, SecureToken);
-
-    final request = LoginRequest(
-      email: 'ahmed@gmail.com',
-      password: 'password1',
-    );
-
-    try {
-      final response = await authService.login(request);
-
-      setState(() {
-        if (mounted) {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => const StudentsScreen()),
-        );
-        }
-      });
-    } catch (e) {
-      setState(() {
-        result = 'Login Error ❌\n$e';
-      });
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Login Test'),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ElevatedButton(
-              onPressed: login,
-              child: const Text('Login'),
-            ),
-            const SizedBox(height: 20),
-            Text(result),
-          ],
+    return MultiBlocProvider(
+      
+      providers: [
+        BlocProvider<LoginPageCubit>(
+          create: (context) => LoginPageCubit(),
         ),
+        BlocProvider<AuthCubit>(
+          create: (context) => AuthCubit(SecureStorageService()),
+        ),
+        BlocProvider(
+  create: (context) => ProfileCubit(
+    apiClient:  ApiClient(), 
+    secureStorage: SecureStorageService(), 
+    // أو TokenStorage حسب اسم الكلاس لديك
+  ),
+),
+ BlocProvider(
+  create: (context) => StudentListCubit(
+      ApiClient(), 
+    
+  ),
+),
+ BlocProvider(
+  create: (context) => AddStudentCubit(
+      ApiClient(), 
+    
+  ),
+),
+ BlocProvider(
+  create: (context) => UpdateStudentCubit(
+      ApiClient(), 
+    
+  ),
+),
+ BlocProvider(
+  create: (context) => AllUsersCubit(
+      ApiClient(), 
+    
+  ),
+),
+      ],
+      child: MaterialApp(
+        title: 'Secure Student Management',
+        debugShowCheckedModeBanner: false,
+        routes: {
+          LoginPage.id: (context) =>const LoginPage(),
+          StudentProfilePage.id: (context) => const StudentProfilePage(),
+          SplashScreen.id: (context) => const SplashScreen(),
+          AdminDashbordPage.id: (context) => const AdminDashbordPage(),
+          StudentPage.id: (context) => const StudentPage(),
+          TeacherPage.id: (context) => const TeacherPage(),
+          HomePage.id: (context) => const HomePage(),
+          AddStudentPage.id:(context) => const AddStudentPage(),
+          AllUserPage.id:(context) => const AllUserPage(),
+        //  EditStudentPage.id:(context) => const EditStudentPage()
+        },
+        initialRoute: LoginPage.id,
+        theme: ThemeData(primaryColor:AppColors.primary, scaffoldBackgroundColor: AppColors.background),
       ),
     );
   }
