@@ -53,6 +53,7 @@ class _StudentProfilePageState extends State<StudentProfilePage> {
                   Text('Enter ID with Student',style: TextStyle(fontSize: 13),),
                   CustomTextFiled(
                     controller: studentId,
+                    hint:'Enter ID with Student'
                   ),
                    
                 ],

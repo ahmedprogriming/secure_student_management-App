@@ -1,58 +1,83 @@
 import 'package:flutter/material.dart';
-import 'package:secure_student_management/core/theme/app_colors.dart';
+import '../theme/app_colors.dart';
 
 class CustomCard extends StatelessWidget {
-  const CustomCard({super.key, required this.text, this.onTap});
-final String text;
+  final String title;
+  final String subtitle;
+  final IconData icon;
+  final VoidCallback onTap;
 
-final void Function()? onTap;
+  const CustomCard({
+    super.key,
+    required this.title,
+    required this.subtitle,
+    required this.icon,
+    required this.onTap,
+  });
+
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Stack(
-          clipBehavior: Clip.none,
-          children: [
-            Container(
-            
-              height: 140,
-              width: 165,
-              
-              decoration: BoxDecoration(
-                
-                boxShadow: [
-                  BoxShadow(
-                    blurRadius: 40,
-                    color:AppColors.textSecondary.withValues(alpha: 0.2),
-                    spreadRadius: 0,
-                    offset: Offset(10,10),
+    return Container(
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(color: AppColors.border.withOpacity(0.8)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.04),
+            blurRadius: 14,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(18),
+          onTap: onTap,
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Row(
+              children: [
+                Container(
+                  width: 52,
+                  height: 52,
+                  decoration: BoxDecoration(
+                    color: AppColors.primaryLight,
+                    borderRadius: BorderRadius.circular(14),
                   ),
-                ],
-              ),
-        
-              child: Card(
-                 color:AppColors.primary,
-                elevation: 10,
-        
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                  child: Icon(icon, color: AppColors.primary, size: 28),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
                   child: Column(
-                   mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(text,
-                                      
-                        style: TextStyle(color: Colors.black87, fontSize: 20,fontWeight: FontWeight.bold),
+                      Text(
+                        title,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.textPrimary,
+                        ),
                       ),
-                 
-                   
+                      const SizedBox(height: 4),
+                      Text(
+                        subtitle,
+                        style: const TextStyle(
+                          fontSize: 13,
+                          color: AppColors.textSecondary,
+                        ),
+                      ),
                     ],
                   ),
                 ),
-              ),
+                const Icon(Icons.arrow_forward_ios_rounded, color: AppColors.textSecondary, size: 16),
+              ],
             ),
-           
-          ],
+          ),
         ),
+      ),
     );
   }
 }

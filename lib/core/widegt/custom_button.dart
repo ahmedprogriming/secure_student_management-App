@@ -1,61 +1,76 @@
-
 import 'package:flutter/material.dart';
+import '../theme/app_colors.dart';
 
 class CustomButton extends StatelessWidget {
+  final String namebutton;
+  final VoidCallback? onTap;
+  final bool isLoading;
+  final IconData? icon;
+
   const CustomButton({
     super.key,
-    this.onTap,
-    this.isLoading = false,
     required this.namebutton,
-    this.buttonColor,
-    this.borderColor,
+    required this.onTap,
+    this.isLoading = false,
     this.icon,
-
   });
-
-  final void Function()? onTap;
-  final bool isLoading;
-  final String namebutton;
-  final Color? buttonColor;
-  final Color? borderColor;
-  final Icon? icon;
-
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        width: double.infinity,
-        height: 55,
-        decoration: BoxDecoration(
-          color: buttonColor ?? Color(0xffD6A857),
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: borderColor ?? Color(0xffC49243), width: 1),
-        ),
-        child: Center(
-          child: isLoading
-              ? SizedBox(
-                  height: 24,
-                  width: 24,
-                  child: CircularProgressIndicator(color: Colors.black),
-                )
-              : Row(
-                  mainAxisSize: MainAxisSize.min,
-                   spacing: 12,
-                  children: [
-                     (icon != null)? icon! : SizedBox.shrink(),
-                    
-                    Text(
-                      namebutton,
-                      style: TextStyle(
-                        color: Color.fromARGB(255, 78, 56, 24),
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
+    return Container(
+      width: double.infinity,
+      height: 54,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(14),
+        gradient: onTap != null
+            ? const LinearGradient(
+                colors: [AppColors.primary, AppColors.primaryDark],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              )
+            : null,
+        color: onTap == null ? Colors.grey.shade300 : null,
+        boxShadow: onTap != null
+            ? [
+                BoxShadow(
+                  color: AppColors.primary.withOpacity(0.28),
+                  blurRadius: 16,
+                  offset: const Offset(0, 6),
                 ),
+              ]
+            : [],
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(14),
+          onTap: isLoading ? null : onTap,
+          child: Center(
+            child: isLoading
+                ? const SizedBox(
+                    width: 22,
+                    height: 22,
+                    child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2.5),
+                  )
+                : Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      if (icon != null) ...[
+                        Icon(icon, color: Colors.white, size: 20),
+                        const SizedBox(width: 8),
+                      ],
+                      Text(
+                        namebutton,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          letterSpacing: 0.3,
+                        ),
+                      ),
+                    ],
+                  ),
+          ),
         ),
       ),
     );
